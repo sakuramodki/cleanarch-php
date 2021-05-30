@@ -1,0 +1,18 @@
+version: '3'
+services:
+  fe:
+    image: php:7.4-cli
+    ports:
+      - 8080:8080
+    command: /bin/bash -c "docker-php-ext-install pdo_mysql; apt-get update; apt-get install git -y; php -S 0.0.0.0:8080 -t public"
+    environment:
+      WORDPRESS_DB_PASSWORD: my-secret-pw
+    working_dir: /root/htdocs
+    volumes:
+      - .:/root/htdocs
+  mysql:
+    image: mysql:5.7
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: my-secret-pw
