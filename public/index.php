@@ -1,6 +1,6 @@
 <?php
 
-use App\Application\Action\IndexAction;
+use App\Application\Action\DirtyIndexAction;
 use App\Domain\Repositories\RecordRepository;
 use App\Infrastructure\repositories\RecordsRepositoryImpl;
 use DI\ContainerBuilder;
@@ -25,6 +25,6 @@ $app = AppFactory::create();
 $app->addErrorMiddleware(true, true, true);
 
 // Add routes
-$app->get('/', IndexAction::class);
+$app->get('/', DirtyIndexAction::class);
 
 $app->run();
