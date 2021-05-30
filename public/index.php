@@ -1,30 +1,18 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="ja">
+<head>
+    <title>リリース済みのアルバム一覧</title>
+</head>
+<body>
+<h1>リリース済みのアルバム一覧</h1>
 <?php
+    $pdo = new \PDO('mysql:host=mysql;dbname=sample;port=3306', 'root', 'my-secret-pw');
+    $statement = $pdo->query("select * from records");
+    $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
 
-use App\Application\Action\IndexAction;
-use App\Domain\Repositories\RecordRepository;
-use App\Infrastructure\repositories\RecordsRepositoryImpl;
-use DI\ContainerBuilder;
-use Slim\Factory\AppFactory;
-use Slim\Views\Twig;
-
-require __DIR__ . '/../vendor/autoload.php';
-
-$containerBuilder = new ContainerBuilder();
-
-$containerBuilder->addDefinitions([
-    Twig::class => fn () => TWig::create(__DIR__ . '/../templates'),
-    \PDO::class => fn () => new \PDO('mysql:host=mysql;dbname=sample;port=3306', 'root', 'my-secret-pw'),
-    RecordRepository::class => \DI\autowire(RecordsRepositoryImpl::class),
-]);
-
-// Instantiate App
-AppFactory::setContainer($containerBuilder->build());
-$app = AppFactory::create();
-
-// Add error middleware
-$app->addErrorMiddleware(true, true, true);
-
-// Add routes
-$app->get('/', IndexAction::class);
-
-$app->run();
+    foreach ($data as $record) {
+?>
+<a href="<?=$record['url']?>"><?=$record['title']?></a><br/>
+<?php } ?>
+</body>
+</html>
